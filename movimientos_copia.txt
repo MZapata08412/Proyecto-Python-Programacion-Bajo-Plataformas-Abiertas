@@ -1,0 +1,4 @@
+Tipo #Transaccion Date Time Code Cantidad Monto Pago Vuelto
+EN 1 10/01/22 17:20 10 1  500 500 0
+EN 2 10/01/22 17:29 13 1  500 500 0
+EN 3 10/01/22 17:29 14 1  500 500 0

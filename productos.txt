@@ -1,0 +1,18 @@
+codigo descripcion existencia maximo costo precio venta
+1 Coca_lata 27 30 300 500 6500
+2 Coca_lata_light 28 30 300 500 5500
+3 Coca_desechable 26 30 600 1000 8500
+4 Fanta_lata 30 30 300 500 4500
+5 Fanta_desechable 30 30 300 500 4500
+6 Pepsi_lata 29 30 300 500 5000
+7 Pesi_desechable 29 30 300 500 5000
+8 Gin_lata 30 30 300 500 5000
+9 Coca_des_light 28 30 300 500 6500
+10 Fresco_leche 29 30 300 500 5500
+11 Galleta_Chiki 28 30 250 500 7000
+12 Pinguino 29 30 250 500 7000
+13 Platanitos_verdes 30 35 250 500 6500
+14 Platanitos_maduros 30 30 250 500 6500
+15 Takis 29 30 300 500 2500
+16 Papas 30 30 300 500 3000
+
