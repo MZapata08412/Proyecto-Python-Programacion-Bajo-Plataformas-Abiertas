@@ -15,6 +15,13 @@ from timeit import default_timer
 from tkinter.simpledialog import askstring
 from tkinter.messagebox import showinfo
 
+import socket
+
+host = socket.gethostname()
+port = 12345
+BUFFER_SIZE = 1024
+MESSAGE = 'El cliente dice hola!' # Datos que queremos enviar
+
 #Definición de la Ventana Principal del Menú
 ventana =Tk()
 ventana.title("Máquina Dispensadora")
@@ -47,6 +54,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
         return list_of_lists
         
     def Pagar():#Funcion para generar ventana de metodo de pago del producto, así como el vuelto
+        global MESSAGE
         comprarWindow.withdraw()
         ventanaPago=Toplevel()
         ventanaPago.title("Pagar/Pay")
@@ -54,9 +62,12 @@ def comprar_w(): #Funcion de venta y cobro de productos
         ventanaPago.configure(background="#CCCCFF")
         ventanaPago.resizable(width=NO,height=NO)
         #print("Seleccion de producto: " + str(var.get()))
+        MESSAGE = 'Seleccion de producto: ' + str(var.get())
+        socket_tcp.send(MESSAGE.encode('utf-8'))
         lienzo=Canvas(ventanaPago,width=500,height=400,bg="#CCCCFF")
         lienzo.place(x=50,y=60)
         def finalizarCompra():#Funcion que finaliza la compra y genera el vuelto de la persona, luego se regresa a ventana principal
+            global MESSAGE
             tipo_moneda=moneda.get()
             if tipo_moneda==1:
                 print("tipo de moneda seleccionada: "+str(tipo_moneda))
@@ -64,6 +75,8 @@ def comprar_w(): #Funcion de venta y cobro de productos
                print("tipo de moneda seleccionada: "+str(tipo_moneda))
             elif tipo_moneda==3:
                 print("tipo de moneda seleccionada: "+str(tipo_moneda))
+            MESSAGE = 'Tipo de moneda seleccionada: ' + str(tipo_moneda)
+            socket_tcp.send(MESSAGE.encode('utf-8'))
 
             a_file = open("archivo.txt", "r")#Se abre el archivo para ser leído y generar una matriz de datos
 
@@ -127,6 +140,10 @@ def comprar_w(): #Funcion de venta y cobro de productos
                     #print(vuelto)
                     pago=500
                     messagebox.showinfo(message="Venta exitosa, su vuelto es: "+str(vuelto), title="vuelto")
+                MESSAGE = 'El vuelto es de ' + str(vuelto)
+                socket_tcp.send(MESSAGE.encode('utf-8'))
+                MESSAGE = 'Compra exitosa'
+                socket_tcp.send(MESSAGE.encode('utf-8'))
             except:
                 messagebox.showinfo(message="Error", title="vuelto")
             #print("VUELTO "+str(vuelto))
@@ -356,6 +373,9 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
             messagebox.showinfo(message="Contraseña Incorrecta: ", title="Administrador")
 
     def ventana_admin():#Ventana con las opciones del administrador
+        global MESSAGE
+        MESSAGE = 'Modo Administrador activado'
+        socket_tcp.send(MESSAGE.encode('utf-8'))
         ventana.withdraw()
         ventana_admin=Toplevel()
         ventana_admin.title("ADMINISTRADOR")
@@ -392,6 +412,9 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
 
         #Funciones de los botones de la ventana administrador
         def cerrar_Admin():
+            global MESSAGE
+            MESSAGE = 'Modo Administrador desactivado'
+            socket_tcp.send(MESSAGE.encode('utf-8'))
             ventana_admin.destroy()
             ventana.deiconify()
         def Reset():
@@ -400,6 +423,9 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
             archivo.close()
             ventana_admin.destroy()
             messagebox.showinfo(message="Datos Reiniciados", title="Administrador")
+            global MESSAGE
+            MESSAGE = 'Datos Reiniciados por Administración'
+            socket_tcp.send(MESSAGE.encode('utf-8'))
             ventana.deiconify()
 
         def Venta_R():#Resumen de ventas diarias
@@ -486,6 +512,9 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
 
         
 def Ventana_about():#Se define la venta about del creador de la aplicacion
+    global MESSAGE
+    MESSAGE = 'Usuario está viendo información de la aplicación'
+    socket_tcp.send(MESSAGE.encode('utf-8'))
     ventana.withdraw()
     ventana_about=Toplevel()
     ventana_about.title("Acerca de/About")
@@ -562,5 +591,9 @@ boton_admin.place(x=350,y=250)
 boton_about.place(x=430,y=350)
 
 
-
-ventana.mainloop() #Loop de la ventana principal del sistema de la aplicación
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_tcp:
+    socket_tcp.connect((host, port))
+    socket_tcp.send(MESSAGE.encode('utf-8'))
+    data = socket_tcp.recv(BUFFER_SIZE)
+    ventana.mainloop() #Loop de la ventana principal del sistema de la aplicación
+    # Convertimos str a bytes
