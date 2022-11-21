@@ -1,8 +1,8 @@
-#Proyecto Programado 1 Python
-#Hecho por Manuel Zapata/ Astrid/ Karen
-#Modulos usados Tkinter, time.
+# Proyecto Programado 1 Python
+# Hecho por Manuel Zapata/ Astrid Jiménez/ Karen Campos
+# Modulos usados Tkinter, time.
 
-#Importación de Modulos para el manejo de interfaz
+# Importación de Modulos para el manejo de interfaz
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
@@ -20,9 +20,9 @@ import socket
 host = socket.gethostname()
 port = 12345
 BUFFER_SIZE = 1024
-MESSAGE = 'El cliente dice hola!' # Datos que queremos enviar
+MESSAGE = 'El cliente dice hola!' # Datos que se envían
 
-#Definición de la Ventana Principal del Menú
+# Definición de la Ventana Principal del Menú
 ventana =Tk()
 ventana.title("Máquina Dispensadora")
 ventana.configure(background="#CCCCFF")
@@ -30,8 +30,8 @@ ventana.geometry("1000x650")
 ventana.resizable(False,False)
 transaccion=0
 
-#Definición de ventanas secundarias y sus funciones
-def comprar_w(): #Funcion de venta y cobro de productos
+# Definición de ventanas secundarias y sus funciones
+def comprar_w(): # Función de venta y cobro de productos
     ventana.withdraw()
     comprarWindow=Toplevel()
     comprarWindow.title("Comprar/Buy")
@@ -40,10 +40,10 @@ def comprar_w(): #Funcion de venta y cobro de productos
     comprarWindow.resizable(width=NO,height=NO)
     lienzo=Canvas(comprarWindow,width=700,height=400,bg="#CCCCFF")
     lienzo.place(x=50,y=60)
-    #Aca van las funciones para la ventana de ventas
+    # Acá van las funciones para la ventana de ventas
     
     
-    def Data():#Esta funcion creara la matriz de datos para estar trabajando el archivo txt de productos
+    def Data(): # Esta funcion creara la matriz de datos para estar trabajando el archivo txt de productos
         a_file = open("archivo.txt", "r")
         list_of_lists = []
         for line in a_file:
@@ -53,7 +53,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
         
         return list_of_lists
         
-    def Pagar():#Funcion para generar ventana de metodo de pago del producto, así como el vuelto
+    def Pagar(): # Funcion para generar ventana de metodo de pago del producto, así como el vuelto
         global MESSAGE
         comprarWindow.withdraw()
         ventanaPago=Toplevel()
@@ -62,11 +62,11 @@ def comprar_w(): #Funcion de venta y cobro de productos
         ventanaPago.configure(background="#CCCCFF")
         ventanaPago.resizable(width=NO,height=NO)
         #print("Seleccion de producto: " + str(var.get()))
-        MESSAGE = 'Seleccion de producto: ' + str(var.get())
-        socket_tcp.send(MESSAGE.encode('utf-8'))
+        MESSAGE = 'Seleccion de producto: ' + str(var.get()) # Cambia el valor del mensaje
+        socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
         lienzo=Canvas(ventanaPago,width=500,height=400,bg="#CCCCFF")
         lienzo.place(x=50,y=60)
-        def finalizarCompra():#Funcion que finaliza la compra y genera el vuelto de la persona, luego se regresa a ventana principal
+        def finalizarCompra(): # Funcion que finaliza la compra y genera el vuelto de la persona, luego se regresa a ventana principal
             global MESSAGE
             tipo_moneda=moneda.get()
             if tipo_moneda==1:
@@ -75,10 +75,10 @@ def comprar_w(): #Funcion de venta y cobro de productos
                print("tipo de moneda seleccionada: "+str(tipo_moneda))
             elif tipo_moneda==3:
                 print("tipo de moneda seleccionada: "+str(tipo_moneda))
-            MESSAGE = 'Tipo de moneda seleccionada: ' + str(tipo_moneda)
-            socket_tcp.send(MESSAGE.encode('utf-8'))
+            MESSAGE = 'Tipo de moneda seleccionada: ' + str(tipo_moneda) # Cambia el valor del mensaje
+            socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
 
-            a_file = open("archivo.txt", "r")#Se abre el archivo para ser leído y generar una matriz de datos
+            a_file = open("archivo.txt", "r") # Se abre el archivo para ser leído y generar una matriz de datos
 
             list_of_lists = []
             for line in a_file:
@@ -89,7 +89,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
             a_file.close()
 
 
-            archivo=open("archivo.txt","w")#Se crea el método de escritura para editar el archivo
+            archivo=open("archivo.txt","w") # Se crea el método de escritura para editar el archivo
             pos=len(list_of_lists)
             option=var.get()
             
@@ -105,11 +105,11 @@ def comprar_w(): #Funcion de venta y cobro de productos
                 else:
                     line=archivo.writelines(str(list_of_lists[i][0])+" "+
                     str(list_of_lists[i][1])+" "+
-                    str(int(list_of_lists[i][2])-1)+" "+  #Acá se resta el producto vendido
+                    str(int(list_of_lists[i][2])-1)+" "+  # Acá se resta el producto vendido
                     str(list_of_lists[i][3])+" "+
                     str(list_of_lists[i][4])+" "+
                     str(list_of_lists[i][5])+" "+
-                    str(int(list_of_lists[i][6])+int(list_of_lists[i][5]))+"\n")#Acá se suma el precio a las ventas totales del producto
+                    str(int(list_of_lists[i][6])+int(list_of_lists[i][5]))+"\n") # Acá se suma el precio a las ventas totales del producto
             archivo.close()
 
 
@@ -142,14 +142,14 @@ def comprar_w(): #Funcion de venta y cobro de productos
                     messagebox.showinfo(message="Venta exitosa, su vuelto es: "+str(vuelto), title="vuelto")
                 MESSAGE = 'El vuelto es de ' + str(vuelto)
                 socket_tcp.send(MESSAGE.encode('utf-8'))
-                MESSAGE = 'Compra exitosa'
-                socket_tcp.send(MESSAGE.encode('utf-8'))
+                MESSAGE = 'Compra exitosa' # Cambia el valor del mensaje
+                socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
             except:
                 messagebox.showinfo(message="Error", title="vuelto")
             #print("VUELTO "+str(vuelto))
             #print(list_of_lists)
 
-            new=open("movimientos.txt","a")#Se crea el archivo de movimientos
+            new=open("movimientos.txt","a") # Se crea el archivo de movimientos
             global transaccion
             today = date.today()
             transaccion+=1
@@ -163,9 +163,9 @@ def comprar_w(): #Funcion de venta y cobro de productos
             new.close()
             
             ventanaPago.destroy()
-            ventana.deiconify()##Reaparece la ventana principal
+            ventana.deiconify() # Reaparece la ventana principal
             
-        def boton_pago():#Este boton se activa para realizar el pago cuando se selecciona un producto de entrada
+        def boton_pago(): # Este boton se activa para realizar el pago cuando se selecciona un producto de entrada
             opcion=moneda.get()
             pos=var.get()
             vuelto=0
@@ -182,9 +182,9 @@ def comprar_w(): #Funcion de venta y cobro de productos
             
         
           
-        #Variabe de tipo mondeda
+        # Variabe de tipo mondeda
         moneda=IntVar()
-        #Seleccion de método de Pago billete de mil, billete de 500 y moneda de 500
+        # Seleccion de método de Pago billete de mil, billete de 500 y moneda de 500
         radiobutton1=tk.Radiobutton(lienzo,text="Billete ₡1000",bg="#CCCCFF",  variable=moneda, value=1, command=boton_pago)
         radiobutton1.deselect()
         radiobutton1.place(x=10,y=20)
@@ -209,10 +209,10 @@ def comprar_w(): #Funcion de venta y cobro de productos
 
         ventanaPago.mainloop()
         
-    def close():#Funcion para cerrar el programa
+    def close(): # Funcion para cerrar el programa
         comprarWindow.destroy()
-        ventana.deiconify()##Reaparece la ventana principal
-    def GetVariable():#Funcion que captura el codigo del producto a comprar y habilita el boton de compra
+        ventana.deiconify() # Reaparece la ventana principal
+    def GetVariable(): # Funcion que captura el codigo del producto a comprar y habilita el boton de compra
         opcion=var.get()
         if opcion==0:
             botonHome = Button(comprarWindow, text="Pagar", command=close,bg="#BF1134",fg="white",font=("Helvetica",15),state="disable")
@@ -228,10 +228,10 @@ def comprar_w(): #Funcion de venta y cobro de productos
 
     
         
-    a_file = open("archivo.txt", "r")#Leyendo el archivo de texto de productos disponibles
+    a_file = open("archivo.txt", "r") # Leyendo el archivo de texto de productos disponibles
 
-    m_datos = [] #Variable que lee el archivo de texto con los productos disponibles
-    for line in a_file:#Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
+    m_datos = [] # Variable que lee el archivo de texto con los productos disponibles
+    for line in a_file: # Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
         stripped_line = line.strip()
         line_list = stripped_line.split()
         m_datos.append(line_list)
@@ -243,7 +243,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
     
     var=IntVar()
    
-    #Etiquetas para la ventana de Compras
+    # Etiquetas para la ventana de Compras
     
     label1=tk.Label(comprarWindow,text="Producto/Product",font=("Times New Roman","10"),foreground="Black",width=15, height=1, bg="#CCCCFF")
     label1.place(x=52,y=35)
@@ -291,7 +291,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
     label22.place(x=560,y=230)
 
     
-    #Definición de botones en ventana de compras
+    # Definición de botones en ventana de compras
     
     
     botonHome = Button(comprarWindow, text="Cancelar/Cancel", command=close,bg="#BF1134",fg="white",font=("Helvetica",15),state="normal")
@@ -351,7 +351,7 @@ def comprar_w(): #Funcion de venta y cobro de productos
     comprarWindow.mainloop()
 
 
-def password():#Se genera la ventana para la captura de la contrase del adminiostrador
+def password(): # Se genera la ventana para la captura de la contrase del adminiostrador
     ventana.withdraw()
     ventana_pasword=Toplevel()
     ventana_pasword.title("Administrador/Administrator")
@@ -361,8 +361,8 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
     password=StringVar()
 
 
-    #Se definen ventanas para la ventana de administrador, así como funciones de esta parte.
-    def contraseña():#Funcion que verifica la contraseña del administrador
+    # Se definen ventanas para la ventana de administrador, así como funciones de esta parte.
+    def contraseña(): # Funcion que verifica la contraseña del administrador
         contraseña="admin"
         p=password.get()
         if contraseña==p:
@@ -372,10 +372,10 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
         else:
             messagebox.showinfo(message="Contraseña Incorrecta: ", title="Administrador")
 
-    def ventana_admin():#Ventana con las opciones del administrador
+    def ventana_admin(): # Ventana con las opciones del administrador
         global MESSAGE
-        MESSAGE = 'Modo Administrador activado'
-        socket_tcp.send(MESSAGE.encode('utf-8'))
+        MESSAGE = 'Modo Administrador activado' # Cambia el valor del mensaje
+        socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
         ventana.withdraw()
         ventana_admin=Toplevel()
         ventana_admin.title("ADMINISTRADOR")
@@ -383,8 +383,8 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
         ventana_admin.configure(background="#CCCCFF")
         ventana_admin.resizable(width=NO,height=NO)
 
-        #Se definen botones y labels para esta seccion del código
-        #creacion de frame
+        # Se definen botones y labels para esta seccion del código
+        # creacion de frame
         frame_admin=Frame(ventana_admin)
         frame_admin.configure(background="#CCCCFF")
         frame_admin.pack(fil=BOTH, expand=1)
@@ -397,24 +397,24 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
 
         #lienzo=Canvas(ventanaPago,width=500,height=400,bg="#CCCCFF")
         #lienzo.place(x=50,y=60)
-        #Creacion del scroll bar
+        # Creacion del scroll bar
         my_scrollbar=ttk.Scrollbar(frame_admin,orient=VERTICAL,command=my_canvas.yview)
         my_scrollbar.pack(side=RIGHT,fill=Y)
-        #Configuracion del canvas
+        # Configuracion del canvas
         my_canvas.configure(yscrollcommand=my_scrollbar.set)
         my_canvas.bind('<Configure>',lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
-        #Creacion de otro frame dentro del canva
+        # Creacion de otro frame dentro del canva
         second_frame=Frame(my_canvas)
-        #Agregar el nuevo frame a la ventana administrador
+        # Agregar el nuevo frame a la ventana administrador
         my_canvas.create_window((0,0),window=second_frame,anchor="nw")
-        #Botones de ventana admin
+        # Botones de ventana admin
         opcion=IntVar()
 
-        #Funciones de los botones de la ventana administrador
+        # Funciones de los botones de la ventana administrador
         def cerrar_Admin():
             global MESSAGE
-            MESSAGE = 'Modo Administrador desactivado'
-            socket_tcp.send(MESSAGE.encode('utf-8'))
+            MESSAGE = 'Modo Administrador desactivado' # Cambia el valor del mensaje
+            socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
             ventana_admin.destroy()
             ventana.deiconify()
         def Reset():
@@ -424,15 +424,15 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
             ventana_admin.destroy()
             messagebox.showinfo(message="Datos Reiniciados", title="Administrador")
             global MESSAGE
-            MESSAGE = 'Datos Reiniciados por Administración'
-            socket_tcp.send(MESSAGE.encode('utf-8'))
+            MESSAGE = 'Datos Reiniciados por Administración' # Cambia el valor del mensaje
+            socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
             ventana.deiconify()
 
-        def Venta_R():#Resumen de ventas diarias
-            a_file = open("movimientos.txt", "r")#Leyendo el archivo de texto de productos disponibles
+        def Venta_R(): # Resumen de ventas diarias
+            a_file = open("movimientos.txt", "r") # Leyendo el archivo de texto de productos disponibles
 
-            m_datos = [] #Variable que lee el archivo de texto con los productos disponibles
-            for line in a_file:#Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
+            m_datos = [] # Variable que lee el archivo de texto con los productos disponibles
+            for line in a_file: # Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
                 stripped_line = line.strip()
                 line_list = stripped_line.split()
                 m_datos.append(line_list)
@@ -446,11 +446,11 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
                                 ,font=("Helvetica",10),foreground="Black",
                                 width=70, height=1, bg="#CCCCFF").grid(row=i,column=0)
 
-        def Venta_D():#Ventas detalladas 
-            a_file = open("movimientos.txt", "r")#Leyendo el archivo de texto de productos disponibles
+        def Venta_D(): # Ventas detalladas 
+            a_file = open("movimientos.txt", "r") # Leyendo el archivo de texto de productos disponibles
 
-            m_datos = [] #Variable que lee el archivo de texto con los productos disponibles
-            for line in a_file:#Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
+            m_datos = [] # Variable que lee el archivo de texto con los productos disponibles
+            for line in a_file: # Ciclo que genera una matriz con los datos leidos del archivo .txt de los producto disponibles
                 stripped_line = line.strip()
                 line_list = stripped_line.split()
                 m_datos.append(line_list)
@@ -478,7 +478,7 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
         boton_return=Button(ventana_admin,text="Regresar/Return",font=("Helvetica",12),background="Magenta",command=cerrar_Admin)#.grid(row=16,column=20)
         boton_return.place(x=50,y=550)
         
-        #Labels
+        # Labels
         label=tk.Label(ventana_admin,text="Administrador/Administrator",font=("Helvetica",20),foreground="Black",width=30, height=1, bg="#CCCCFF")#.grid(row=500,column=200)
         label.place(x=120,y=10)
         
@@ -496,10 +496,10 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
         
         
 
-    def close():#Ventana para cerrar la ventana pasword
+    def close(): # Ventana para cerrar la ventana pasword
         ventana_pasword.destroy()
         ventana_admin()
-    #Botones para la captura y verificacion de la contraseña de administrador
+    # Botones para la captura y verificacion de la contraseña de administrador
     label=tk.Label(ventana_pasword,text="Ingrese contraseña/ Enter pasword",foreground="Black",width=30, height=1, bg="#CCCCFF")
     label.place(x=40,y=50)
     E_password=Entry(ventana_pasword,show="*",textvariable=password,width=20)
@@ -508,27 +508,27 @@ def password():#Se genera la ventana para la captura de la contrase del adminios
     boton_pasword.place(x=110,y=120)
 
 
-    ventana_pasword.mainloop()#Loop de la ventana password de ingresos a datos de administrador
+    ventana_pasword.mainloop() # Loop de la ventana password de ingresos a datos de administrador
 
         
-def Ventana_about():#Se define la venta about del creador de la aplicacion
+def Ventana_about():# Se define la venta about del creador de la aplicacion
     global MESSAGE
-    MESSAGE = 'Usuario está viendo información de la aplicación'
-    socket_tcp.send(MESSAGE.encode('utf-8'))
+    MESSAGE = 'Usuario está viendo información de la aplicación' # Cambia el valor del mensaje
+    socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
     ventana.withdraw()
     ventana_about=Toplevel()
     ventana_about.title("Acerca de/About")
     ventana_about.minsize(800,650)
     ventana_about.configure(background="#CCCCFF")
     ventana_about.resizable(width=NO,height=NO)
-    #Definicion de fucion cerrar para ventana aboout
+    # Definicion de fucion cerrar para ventana aboout
     def cerrar_about():
         ventana_about.destroy()
         ventana.deiconify()
 
 
 
-    #Creacion de etiquetas para la ventana about
+    # Creacion de etiquetas para la ventana about
     Label=tk.Label(ventana_about,text="Country/País: Costa Rica",font=("Times New Roman","15"),foreground="Black",width=30, height=1, bg="#CCCCFF")
     Label.place(x=230,y=20)
     Label2=tk.Label(ventana_about,text="Universidad de Costa Rica/ Ingeniería Electrica",font=("Times New Roman","15"),foreground="Black",width=50, height=1, bg="#CCCCFF")
@@ -550,7 +550,7 @@ def Ventana_about():#Se define la venta about del creador de la aplicacion
                     width=60, height=1, bg="#CCCCFF")
     Label10.place(x=100,y=260)
     
-    #Creacion del boton return a pantalla principal del programa
+    # Creacion del boton return a pantalla principal del programa
     boton_regresar=Button(ventana_about,text="Regresar",font=("Helvetica",15),background="Magenta",command=cerrar_about)
     boton_regresar.place(x=350, y= 500)
 
@@ -573,19 +573,19 @@ def Ventana_about():#Se define la venta about del creador de la aplicacion
     
 
 
-#Definicón de Labels en la ventana Principal
+# Definicón de Labels en la ventana Principal
 Label1=tk.Label(text="Welcome/Bienvenido",font=("Times New Roman","20"),foreground="Black",width=30, height=1, bg="#CCCCFF")
 
-#Definición de Botones para la ventana Principal
+# Definición de Botones para la ventana Principal
 boton_comprar=Button(ventana,text="Buy/Comprar",font=("Helvetica",15),background="Magenta",command=comprar_w)
 boton_admin=Button(ventana,text="Administrador/Administrator",font=("Helvetica",15),background="Magenta",command=password)
 boton_about=Button(ventana,text="About",font=("Helvetica",15),background="Magenta",command=Ventana_about)
 
 
-#Colacación de los Label y botones en ventana principal
-#Labeles
+# Colacación de los Label y botones en ventana principal
+# Labeles
 Label1.place(x=250,y=50)
-#Botones
+# Botones
 boton_comprar.place(x=400, y= 150)
 boton_admin.place(x=350,y=250)
 boton_about.place(x=430,y=350)
@@ -593,7 +593,6 @@ boton_about.place(x=430,y=350)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_tcp:
     socket_tcp.connect((host, port))
-    socket_tcp.send(MESSAGE.encode('utf-8'))
+    socket_tcp.send(MESSAGE.encode('utf-8')) # Se envían datos al servidor
     data = socket_tcp.recv(BUFFER_SIZE)
-    ventana.mainloop() #Loop de la ventana principal del sistema de la aplicación
-    # Convertimos str a bytes
+    ventana.mainloop() # Loop de la ventana principal del sistema de la aplicación
